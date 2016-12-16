@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head>
+		<title>OCR</title>
+		<link rel="stylesheet" type-"text/css" href="css/file.css"/>
+		<script src="js/ocrad.js"></script>
+		<script>
+			function carregar_arquivo () {
+
+				var reader = new FileReader();
+
+				reader.onload = function(){
+
+					var img = new Image();
+					img.src = reader.result;
+
+					img.onload = function(){
+
+						document.getElementById('imagemCarregada').innerHTML = ''
+						document.getElementById('imagemCarregada').appendChild(img)
+
+						var texto = OCRAD(img);
+
+						document.getElementById('textoDaImagem').className = "done"
+
+						setTimeout(function(){
+								document.getElementById('textoDaImagem').innerText = texto;
+						}, 1000);						
+
+						/*
+						outro jeito
+						OCRAD(img, function(text){
+
+							document.getElementById('textoDaImagem').className = "done"
+							document.getElementById('textoDaImagem').innerText = text;
+
+						})*/
+
+					}
+				}
+				reader.readAsDataURL(document.getElementById('imagem').files[0])
+			}
+		</script>
+	</head>
+	<body>
+		<h1></h1>
+		<input type="file" onchange="carregar_arquivo()" id="imagem">
+		<div id="main">
+			<div id="imagemCarregada">
+				<p>Nenhum arquivo carregado</p>
+			</div>
+			<div id="textoDaImagem"></div>
+		</div>
+	</body>
+</html>
